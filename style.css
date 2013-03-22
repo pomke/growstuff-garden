@@ -1,0 +1,31 @@
+div.clear {
+    clear: both;
+}
+
+table.gardenCrops td  {
+    cursor: pointer;
+}
+
+div.gardenVisualisation {
+ border: 1px solid silver;
+ margin-bottom: 40px;
+}
+
+div.gardenVisualisation div.cropCircle {
+    cursor: pointer;
+    width: 100px;
+    padding: 5px;
+    border: 1px solid silver;
+    border-radius: 4px;
+    float: left;
+    margin: 5px;
+}
+
+div.gardenVisualisation .cropIcon {
+    position: relative;
+    border: 1px solid silver;
+    padding: 5px;
+    border-radius: 3px;
+    margin: 2px;
+    float: left;
+}

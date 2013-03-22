@@ -1,0 +1,96 @@
+<!doctype html>
+<html ng-app="growstuff">
+    <head>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.js"></script>
+        <script src="http://angular-ui.github.com/bootstrap/ui-bootstrap-tpls-0.2.0.js"></script>
+        <script src="data.js"></script>
+        <script src="garden.js"></script>
+        <link href="style.css" rel="stylesheet">
+        <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container" ng-controller="GardenCtrl">
+            <h2>{{ garden.name }}</h2>
+            <div class='well'>
+                This is a simple example of a <a href='http://growstuff.org'>growstuff</a> 
+                mashup that would let a member manage their gardens in one place 
+                without many form submits. 
+                Currently the data is coming from data.js because the
+                json api at growstuff doesn't offer crop info for a garden, and
+                lacks CORS access, but this would be a simple switch to make 
+                live down the track if it's useful. 
+                <br/>
+                <a href='https://github.com/pomke/growstuff-garden'>github repository</a>
+            </div>
+            <div class='row'>
+
+                <div class="span4">
+
+                    <div class="control-group">
+                        <label class="control-label" for="planting_What did you plant">What did you plant?</label>
+                        <div class="controls">
+                            <input type="text" ng-model="selected.crop" typeahead="crop.system_name for crop in crops | filter:$viewValue">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="planting_When">When?</label>
+                        <div class="controls">
+                            <select class="span1" ng-model="selected.year" ng-options="y.label for y in years"></select>
+                            <select class="span1" ng-model="selected.month" ng-options="m.label for m in months"></select>
+                            <select class="span1" ng-model="selected.day" ng-options="d.label for d in days"></select>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="planting_How many">How many?</label>
+                        <div class="controls">
+                            <input class="input-small" ng-model="selected.number" type="number" value="1">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="planting_Tell">Tell us more about it</label>
+                        <div class="controls">
+                            <textarea cols="40" ng-model="selected.desc" rows="6"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="planting_colour">Colour code your crop</label>
+                        <div class="controls">
+                            <input class="input-small" ng-model="selected.colour" type="color" value="#cccccc">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="span8">
+                    <table class='table table-striped table-bordered table-hover gardenCrops'>
+                        <tr ng-repeat="c in garden.crops" ng-click="selectCrop(c)" ng-class="{'info':selected == c}">
+                            <td ng-bind="c.number + ' &times;'"></td>
+                            <td ng-bind="c.crop" ng-style="{color : c.colour}"></td>
+                            <td ng-bind="formatDate(c)"></td>
+                            <td ng-bind="c.desc"></td>
+                            <td ng-click="deleteCrop(c)"><i class="icon-remove"></i></td>
+                        </tr>
+                    </table>
+                    <button class="btn btn-success" ng-click="addCrop()"><i class="icon-leaf"></i> New Crop</button>
+                </div>
+            </div>
+
+            <h2>What's in this garden?</h2>
+
+            <div class="gardenVisualisation span8">
+                <div ng-repeat="c in garden.crops" ng-click="selectCrop(c)" class="cropCircle" tooltip="{{c.desc}}">
+                    <div><i ng-bind="c.crop"></i></div>
+                    <div ng-style="{background : c.colour}" class="cropIcon" ng-repeat="n in arrayOfLength(c.number)">
+                        <i class="icon-leaf"></i> 
+                    </div>
+                    <div class='clear'></div>
+                </div>
+            </div>
+
+        </div> 
+    </body>
+</html>
